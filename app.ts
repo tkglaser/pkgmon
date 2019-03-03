@@ -62,12 +62,10 @@ async function npmInstall() {
 
 async function main() {
   const currentHash = await calculateHash();
-  console.log(currentHash);
   const oldHash = await readHash();
-  console.log(oldHash);
   if (currentHash !== oldHash) {
     console.log("hash change, installing");
-    // await npmInstall();
+    await npmInstall();
     await saveHash(currentHash);
   } else {
     console.log("no change");

@@ -1,6 +1,6 @@
 {
   "name": "pkgmon",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Runs npm install when package-lock.json has changed",
   "main": "index.js",
   "bin": {
