@@ -13,6 +13,10 @@
   },
   "author": "tkglaser",
   "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/tkglaser/pkgmon"
+  },
   "devDependencies": {
     "@types/node": "^11.10.4",
     "typescript": "^3.3.3333"
