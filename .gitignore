@@ -4,6 +4,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+package.md5
 
 # Runtime data
 pids
@@ -59,3 +60,5 @@ typings/
 
 # next.js build output
 .next
+
+bin/
