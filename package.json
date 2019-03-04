@@ -1,8 +1,7 @@
 {
   "name": "pkgmon",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Runs npm install when package-lock.json has changed",
-  "main": "index.js",
   "bin": {
     "pkgmon": "./bin/app.js"
   },
@@ -11,11 +10,11 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "tkglaser",
+  "author": "Thomas Glaser <thomas@tkglaser.net> (https://www.tkglaser.net/)",
   "license": "MIT",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/tkglaser/pkgmon"
+    "type": "git",
+    "url": "https://github.com/tkglaser/pkgmon"
   },
   "devDependencies": {
     "@types/node": "^11.10.4",
