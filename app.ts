@@ -3,6 +3,7 @@
 import * as crypto from "crypto";
 import * as fs from "fs";
 import { exec } from "child_process";
+import * as program from "commander";
 
 function handleError(err: any) {
   if (err) {
@@ -60,16 +61,42 @@ async function npmInstall() {
   });
 }
 
-async function main() {
+async function check(run: boolean) {
   const currentHash = await calculateHash();
   const oldHash = await readHash();
   if (currentHash !== oldHash) {
-    console.log("hash change, installing");
-    await npmInstall();
-    await saveHash(currentHash);
+    if (run) {
+      console.log("hash change, installing");
+      await npmInstall();
+      await saveHash(currentHash);
+    } else {
+      console.log("change in package-lock.json detected. Please run npm ci.");
+      process.exit(-1);
+    }
   } else {
     console.log("no change");
   }
 }
 
-main();
+async function reset() {
+  const currentHash = await calculateHash();
+  await saveHash(currentHash);
+}
+
+program
+  .version("0.0.4")
+
+program
+  .command("check")
+  .description("Checks if an npm install is required. Use the --run option to execute npm ci")
+  .option("-r, --run", "If set, will run npm install when required.")
+  .action((opts) => check(opts.run));
+
+program
+  .command("reset")
+  .description(
+    "Resets pkgmon to the current installed packages. Use this if you know that an npm install is not required."
+  )
+  .action(() => reset());
+
+program.parse(process.argv);
