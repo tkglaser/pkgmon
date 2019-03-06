@@ -1,6 +1,6 @@
 {
   "name": "pkgmon",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Runs npm install when package-lock.json has changed",
   "bin": {
     "pkgmon": "./bin/app.js"
@@ -17,7 +17,9 @@
     "url": "https://github.com/tkglaser/pkgmon"
   },
   "devDependencies": {
+    "@types/commander": "^2.12.2",
     "@types/node": "^11.10.4",
+    "commander": "^2.19.0",
     "typescript": "^3.3.3333"
   }
 }
