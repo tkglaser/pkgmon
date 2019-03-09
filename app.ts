@@ -4,6 +4,8 @@ import * as crypto from "crypto";
 import * as fs from "fs";
 import { exec } from "child_process";
 import * as program from "commander";
+const boxen = require("boxen");
+const colours = require("colors");
 
 function handleError(err: any) {
   if (err) {
@@ -61,18 +63,35 @@ async function npmInstall() {
   });
 }
 
-async function check(run: boolean) {
+async function check() {
   const currentHash = await calculateHash();
   const oldHash = await readHash();
   if (currentHash !== oldHash) {
-    if (run) {
-      console.log("hash change, installing");
-      await npmInstall();
-      await saveHash(currentHash);
-    } else {
-      console.log("change in package-lock.json detected. Please run npm ci.");
-      process.exit(-1);
-    }
+    console.log(
+      boxen(
+        "Change in package-lock.json detected. " +
+          colours.bold("Please run ") +
+          colours.underline.bold("npm ci") +
+          colours.bold("!"),
+        {
+          padding: 1,
+          borderStyle: "double"
+        }
+      )
+    );
+    process.exit(-1);
+  } else {
+    console.log("no change");
+  }
+}
+
+async function run() {
+  const currentHash = await calculateHash();
+  const oldHash = await readHash();
+  if (currentHash !== oldHash) {
+    console.log("Change in package-lock.json detected. Running npm ci.");
+    await npmInstall();
+    await saveHash(currentHash);
   } else {
     console.log("no change");
   }
@@ -83,14 +102,19 @@ async function reset() {
   await saveHash(currentHash);
 }
 
-program
-  .version("0.0.4")
+program.version("0.0.4");
 
 program
   .command("check")
-  .description("Checks if an npm install is required. Use the --run option to execute npm ci")
-  .option("-r, --run", "If set, will run npm install when required.")
-  .action((opts) => check(opts.run));
+  .description("Checks if an npm install is required but will not execute it.")
+  .action(() => check());
+
+program
+  .command("run")
+  .description(
+    "Checks if an npm install is required. If so, it will run the 'npm ci' command."
+  )
+  .action(() => run());
 
 program
   .command("reset")
@@ -99,4 +123,8 @@ program
   )
   .action(() => reset());
 
-program.parse(process.argv);
+if (process.argv.length < 3) {
+  program.help();
+} else {
+  program.parse(process.argv);
+}
