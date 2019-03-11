@@ -54,10 +54,12 @@ function saveHash(hash: string) {
 
 async function npmInstall() {
   return new Promise(resolve => {
+    console.log("pkgmon: Restoring packages...");
     exec("npm ci", (err, stdout, stderr) => {
       handleError(err);
-      console.log("stdout: " + stdout);
-      console.log("stderr: " + stderr);
+      console.warn(stderr);
+      console.log(stdout);
+      console.log(colours.green("pkgmon: Package restore complete."));
       resolve();
     });
   });
@@ -69,9 +71,9 @@ async function check() {
   if (currentHash !== oldHash) {
     console.log(
       boxen(
-        "Change in package-lock.json detected. " +
+        "pkgmon: Change in package-lock.json detected. " +
           colours.bold("Please run ") +
-          colours.underline.bold("npm ci") +
+          colours.underline.bold("pkgmon install") +
           colours.bold("!"),
         {
           padding: 1,
@@ -81,7 +83,9 @@ async function check() {
     );
     process.exit(-1);
   } else {
-    console.log("no change");
+    console.log(
+      colours.green("pkgmon: No change in package-lock.json detected.")
+    );
   }
 }
 
@@ -89,20 +93,30 @@ async function run() {
   const currentHash = await calculateHash();
   const oldHash = await readHash();
   if (currentHash !== oldHash) {
-    console.log("Change in package-lock.json detected. Running npm ci.");
+    console.log(
+      "pkgmon: Change in package-lock.json detected. Running npm ci..."
+    );
     await npmInstall();
     await saveHash(currentHash);
   } else {
-    console.log("no change");
+    console.log(
+      colours.green("pkgmon: No change in package-lock.json detected.")
+    );
   }
+}
+
+async function install() {
+  await npmInstall();
+  await reset();
 }
 
 async function reset() {
   const currentHash = await calculateHash();
   await saveHash(currentHash);
+  console.log(colours.green("pkgmon: Reset complete."));
 }
 
-program.version("0.0.4");
+program.version("0.0.5");
 
 program
   .command("check")
@@ -115,6 +129,11 @@ program
     "Checks if an npm install is required. If so, it will run the 'npm ci' command."
   )
   .action(() => run());
+
+program
+  .command("install")
+  .description("Runs an 'npm ci' command and resets pkgmon.")
+  .action(() => install());
 
 program
   .command("reset")

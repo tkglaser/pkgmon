@@ -1,7 +1,7 @@
 {
   "name": "pkgmon",
-  "version": "0.0.4",
-  "description": "Runs npm install when package-lock.json has changed",
+  "version": "0.0.5",
+  "description": "Tracks changes to package-lock.json and restores packages when needed",
   "bin": {
     "pkgmon": "./bin/app.js"
   },
