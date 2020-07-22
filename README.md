@@ -4,18 +4,13 @@ Automatically updates node packages whenever the lock file changes in the reposi
 
 ## Why?
 
-Usually, when you add a 3rd party package to a node application, the steps are
+When you pull new code from a repository, it's easy to forget that you might need to run `npm install` (or `npm ci`) because somebody might have added or upgraded a package reference. `pkgmon` checks this for you and automatically runs `npm ci`.
 
-1. Install the package locally and implement your feature using the package
-2. Check it into source control along with the updated `package-lock.json` file
-3. Tell all your team members that they need to run `npm ci` next time they pull the code
-4. Get questions from the team members that missed the message, why your code isn't working
-
-What if you could automatically run `npm ci` whenever you pull code with an updated `package-lock.json`?
+`pkgmon` isn't just running a `npm ci` every time, it smartly tracks changes to your `package-lock.json` and only runs `npm ci` when necessary.
 
 ## How it works
 
-`pkgmon` calculates an md5 checksum of your local `package-lock.json` and saves that checksum to disk. Before you run your code, it checks the `package-lock.json` against the saved checksum and runs an `npm ci` if they are different.
+`pkgmon` calculates the md5 checksum of your local `package-lock.json` and saves that checksum to disk. Before you run your code, it checks the `package-lock.json` against the saved checksum and runs an `npm ci` if they are different.
 
 ## How to add `pkgmon` to your project
 
@@ -35,7 +30,13 @@ npm i -D pkgmon
 
 ## Documentation
 
-`pkgmon` supports the following modes:
+To use pkgmon on the command line outside of the `package.json`, it needs to be installed globally:
+```bash
+npm install -g pkgmon
+```
+Depending on your OS you might have to `sudo` the above command.
+
+`pkgmon` supports the following commands:
 
 ### `pkgmon run`
 
