@@ -19,3 +19,10 @@ steps:
     npm ci
     npm run build
   displayName: 'npm install and build'
+
+- task: Npm@1
+  inputs:
+    command: publish
+    publishEndpoint: 'npmjs.com'
+  displayName: 'publish to npm registry'
+
