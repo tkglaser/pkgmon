@@ -14,6 +14,10 @@ When you pull new code from a repository, it's easy to forget that you might nee
 
 `pkgmon` calculates the md5 checksum of your local `package-lock.json` and saves that checksum to disk. Before you run your code, it checks the `package-lock.json` against the saved checksum and runs an `npm ci` if they are different.
 
+Click to watch the demo video 👇
+
+[![demo video](https://img.youtube.com/vi/0acu1BjOJLI/0.jpg)](https://www.youtube.com/watch?v=0acu1BjOJLI)
+
 ## How to add `pkgmon` to your project
 
 1. Add `pkgmon` as a library (or dev-library) to your project:
