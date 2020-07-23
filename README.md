@@ -2,6 +2,8 @@
 
 Automatically updates node packages whenever the lock file changes in the repository.
 
+[![NPM](https://nodei.co/npm/pkgmon.png)](https://nodei.co/npm/pkgmon/)
+
 ## Why?
 
 When you pull new code from a repository, it's easy to forget that you might need to run `npm install` (or `npm ci`) because somebody might have added or upgraded a package reference. `pkgmon` checks this for you and automatically runs `npm ci`.
